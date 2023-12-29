@@ -5,7 +5,18 @@ export default function createGameBoard() {
   const MAX_COLS = 10;
   let numShips = 0;
 
+  const status = Object.freeze({
+    NOT_TARGETED: 0,
+    HIT: 1,
+    MISSED: 2,
+  });
+
   const gameBoard = [...Array(MAX_ROWS)].map(() => Array(MAX_COLS));
+  const gameBoardStatus = [...Array(MAX_ROWS)].map(() =>
+    Array(MAX_COLS).fill(status.NOT_TARGETED)
+  );
+
+  const isEmptyObject = obj => obj === undefined;
 
   const isValid = (row, col) =>
     row >= 0 && row < MAX_ROWS && col >= 0 && col < MAX_COLS;
@@ -13,6 +24,7 @@ export default function createGameBoard() {
   const getGameBoard = () => gameBoard;
   const getNumShips = () => numShips;
   const getCell = (row, col) => gameBoard[row][col];
+  const getCellStatus = (row, col) => gameBoardStatus[row][col];
 
   const canShipBePlaced = (row, col, shipLength, axis) => {
     if (axis === "Y") {
@@ -48,5 +60,29 @@ export default function createGameBoard() {
     numShips += 1;
   };
 
-  return { getCell, getGameBoard, placeShip, getNumShips };
+  const cellNotTargeted = (row, col) =>
+    gameBoardStatus[row][col] === status.NOT_TARGETED;
+
+  const receiveAttack = (row, col) => {
+    const cell = getCell(row, col);
+
+    if (!isEmptyObject(cell) && cellNotTargeted(row, col)) {
+      gameBoardStatus[row][col] = status.HIT;
+
+      cell.hit();
+      if (cell.isSunk()) numShips -= 1;
+    } else {
+      gameBoardStatus[row][col] = status.MISSED;
+    }
+  };
+
+  return {
+    status,
+    getCell,
+    getCellStatus,
+    getGameBoard,
+    getNumShips,
+    placeShip,
+    receiveAttack,
+  };
 }

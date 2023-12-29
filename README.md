@@ -1,5 +1,5 @@
-<h1 align="center">Title</h1>
-<p align="center">:link: <a href="https://skharat8.github.io/title"><strong>Live Preview</strong></a></p>
+<h1 align="center">Battleship Game</h1>
+<p align="center">:link: <a href="https://skharat8.github.io/odin-battleship"><strong>Live Preview</strong></a></p>
 
 ## Built With
 
@@ -9,4 +9,4 @@
 
 ## Acknowledgements
 
-- Inspired by [The Odin Project](https://www.theodinproject.com/lessons/)
+- Inspired by [The Odin Project](https://www.theodinproject.com/lessons/node-path-javascript-battleship)
